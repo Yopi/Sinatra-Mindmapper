@@ -1,0 +1,8 @@
+#article
+  Vill du verkligen, verkligen, verkligen ta bort #{@article.title} (ID #{@article.id})?
+
+  %form{:method => "post", :action => "/article"}
+    %input{:name => "_method", :type => "hidden", :value => "delete"}
+    %input{:name => "id", :type => "hidden", :value => "#{@article.id}"}
+    %button.btn.btn-danger{:type => "submit"}
+      Ta bort den!

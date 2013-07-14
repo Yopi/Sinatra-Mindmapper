@@ -1,0 +1,56 @@
+#nav {
+    z-index: 9999;
+    width: 100%;
+    background-color: #333;
+    height: 30px;
+}
+
+#nav ol {
+    padding: 5px;
+}
+
+#nav ol li {
+    padding-right: 50px;
+    display: inline;
+    list-style-type: none;
+}
+
+#nav a {
+    color: white;
+    width: 50px;
+}
+
+#content {
+    height: 100%;
+}
+
+#holder {
+}
+
+#new_article {
+    padding: 25px;
+}
+
+#list_of_articles {
+    float: left;
+    width: 200px;
+    height: 100%;
+    background-color: #eee;
+}
+
+#list_of_articles ul {
+    padding-top: 25px;
+    padding-left: 25px;
+    padding-right: 5px;
+}
+
+#article { 
+    padding-top: 25px;
+    margin-left: 255px;
+    padding-right: 25px;
+    
+}
+
+.white {
+    color: white;
+}

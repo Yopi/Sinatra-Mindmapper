@@ -1,0 +1,6 @@
+#list_of_articles
+  %ul
+    - @articles.each do |a|
+      %li.article
+        %a{ :href => "/article/#{a.id}" }
+          #{a.title} (##{a.id})

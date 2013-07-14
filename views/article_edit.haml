@@ -1,0 +1,44 @@
+#new_article
+  %h3 Nytt ark
+  - if @error
+    .alert.alert-error
+      =@error
+  %form.form-horizontal{:method => "post", :action => "/article/#{@action}"}
+    %input{:name => "id", :type => "hidden", :value => "#{@article.id}"}
+
+    .control-group
+      %label.control-label{:for => "article_rotation"}
+        Rotation (i grader):
+      .controls
+        %input{:name => "article_rotation", :type => "text", :placeholder => "Rotation", :value => "#{@article.rotation}"}
+
+    .control-group
+      %label.control-label{:for => "article_distance"}
+        Avstånd mellan noder (200 är standard):
+      .controls
+        %input{:name => "article_distance", :type => "text", :placeholder => "200", :value => "#{@article.distance}"}
+          
+    .control-group
+      %label.control-label{:for => "article_parent"}
+        Faderelement (0 för root):
+      .controls
+        %input{:name => "article_parent", :type => "text", :placeholder => "Fader", :value => "#{@article.parent}"}
+
+    .control-group
+      %label.control-label{:for => "article_title"}
+        Titel:
+      .controls
+        %input{:name => "article_title", :type => "text", :placeholder => "Titel", :value => "#{@article.title}"}
+
+    .control-group
+      %label.control-label{:for => "article_text"}
+        Innehåll (Markdown-formaterat):
+      .controls
+        %textarea{ :name => "article_text", :style => "width:100% !important; height: 400px !important"}=@article.content
+    .control-group      
+      %button.btn{:type => "submit"}
+        - if @action == "edit"
+          Ändra!
+        - else
+          Skapa!
+

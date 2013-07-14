@@ -1,0 +1,12 @@
+#article
+  %h1
+    Lista på användare
+  - @users.each do |user|
+    E-post Lösenord Rättigheter
+    %form.form-inline{:method => "post", :action => "/user/edit"}
+      %input{:type => "hidden", :name => "user_id", :value => "#{user.id}"}
+      %input.input{:type => "text", :name => "user_email", :value => "#{user.email}"}
+      %input.input{:type => "password", :name => "user_password", :value => ""}
+      %input.input-small{:type => "text", :name => "user_permissions", :value => "#{user.permissions}"}
+      %button.btn{:type => "submit"}
+        Ändra

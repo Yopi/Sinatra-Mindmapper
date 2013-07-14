@@ -1,0 +1,25 @@
+#article
+  %h2
+    - if @action == "login"
+      Logga in
+    - else
+      Registrera dig
+  %form.form-horizontal{:method => "post", :action => "/user/#{@action}"}
+    .control-group
+      %label.control-label{:for => "user_email"}
+        E-post:
+      .controls
+        %input{:name => "user_email", :type => "text", :placeholder => "E-post", :value => ""}
+
+    .control-group
+      %label.control-label{:for => "user_password"}
+        Lösenord
+      .controls
+        %input{:name => "user_password", :type => "password"}
+
+    .control-group
+      %button.btn{:type => "submit"}
+        - if @action == "login"
+          Logga in
+        - else
+          Registrera dig

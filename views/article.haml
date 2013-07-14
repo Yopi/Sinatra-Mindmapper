@@ -1,0 +1,16 @@
+=haml :nav
+#article
+  %a{:href => "/article/edit/#{@article.id}"}
+    .btn.btn-info
+      Ändra
+  %a{:href => "/article/#{@article.id}.json"}
+    .btn.btn-inverse
+      Json
+  %a{:href => "/article/delete/#{@article.id}"}
+    .btn.btn-danger
+      Ta bort!
+  %br
+  %br
+  .hero-unit
+    %h1= @article.title
+    %p= @article.content_markdown

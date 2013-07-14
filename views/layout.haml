@@ -1,0 +1,54 @@
+%html
+  %head
+    %link(rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css")
+    %link(rel="stylesheet" type="text/css" href="/style.css")
+    %script(src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript" charset="utf-8")
+    %script(src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js" type="text/javascript" charset="utf-8")
+    %script(type="text/x-mathjax-config")
+      :plain
+        MathJax.Hub.Config({
+          extensions: ["tex2jax.js", "TeX/AMSmath.js"],
+          jax: ["input/TeX","output/HTML-CSS"],
+          tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          }
+        });
+    %script(src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript" charset="utf-8")
+    - if @map
+      %script(src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js" type="text/javascript" charset="utf-8")
+      %script(src="/raphael-connection.js" type="text/javascript" charset="utf-8")
+      %script(src="/raphael-zpd.js" type="text/javascript" charset="utf-8")
+      %script(src="/mindmap.js" type="text/javascript" charset="utf-8")
+      %link(rel="stylesheet" type="text/css" href="/mindmap.css")
+  %body
+    #nav
+      %ol
+        %li
+          %a{:href => "/"}
+            Hem
+        %li
+          %a{:href => "/map"}
+            Karta
+        - if @permissions > 0
+          %li
+            %a{:href => "/article/new"}
+              Nytt ark
+
+        - if @permissions > 1
+          %li
+            %a{:href => "/user"}
+              Användarlista
+
+        %li{:style => "position: absolute; right: 125px"}
+          - if not @user.nil?
+            %p.white.user_info
+              Du är inloggad som #{@user.email},
+              %a{:href => "/user/logout"}
+                logga ut
+          - else
+            %a{:href => "/user/login"}
+              Logga in
+
+    #content
+      = yield
