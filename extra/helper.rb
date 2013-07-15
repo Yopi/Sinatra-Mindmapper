@@ -5,9 +5,9 @@ helpers do
 end
 
 def check_permission(action)
-  if action == "delete" or action == "user_edit"
+  if action == 'delete' || action == 'user_edit'
     return true if @permissions > 1
-  elsif action == "create" or action == "edit"
+  elsif action == 'create' || action == 'edit'
     return true if @permissions > 0
   end
 

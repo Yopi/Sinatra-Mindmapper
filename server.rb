@@ -10,13 +10,13 @@ require './extra/helper'
 
 use Rack::MethodOverride
 use Rack::Session::Pool
-set :public_folder, File.dirname(__FILE__)+"/public/"
+set :public_folder, "#{File.dirname(__FILE__)}/public/"
 set :port, 9449
-markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, :lax_spacing => true)
+markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, lax_spacing: true)
 
 before do
   @user = session[:user]
-  if not @user.nil?
+  if !@user.nil?
     @permissions = @user.permissions
   else
     @permissions = 0
@@ -24,19 +24,20 @@ before do
 end
 
 get '/article/new' do
-  redirect "/" if not check_permission "create"
+  redirect '/' unless check_permission('create')
 
   @article = Article.new
-  @action = "create"
+  @action = 'create'
   view :article_edit
 end
 
 get %r{/article/([\d]+)\.?(json)?$} do
-  puts params.inspect
   id = params[:captures].first
   json = params[:captures].last
+
   @articles = Article.all
   @article = Article.get(id)
+
   if json.nil?
     view :article
   else
@@ -45,55 +46,55 @@ get %r{/article/([\d]+)\.?(json)?$} do
 end
 
 post '/article/create' do
-  redirect "/" if not check_permission "create"
-  
-  @article = Article.new  :title        => params[:article_title],
-                          :content      => params[:article_text],
-                          :rotation     => params[:article_rotation],
-                          :parent       => params[:article_parent],
-                          :distance     => params[:article_distance],
-                          :content_markdown => markdown.render(params[:article_text])
+  redirect '/' unless check_permission('create')
+
+  @article = Article.new  title:            params[:article_title],
+                          content:          params[:article_text],
+                          rotation:         params[:article_rotation],
+                          parent:           params[:article_parent],
+                          distance:         params[:article_distance],
+                          content_markdown: markdown.render(params[:article_text])
+
   if @article.save
       redirect "/article/#{@article.id}"
   else
-      @action = "create"
-      @error = "Något gick fel, försök igen."
+      @action = 'create'
+      @error = 'Något gick fel, försök igen.'
       view :article_edit
   end
 end
 
 get '/article/edit/:id' do
-  redirect "/" if not check_permission "edit"
-  
+  redirect '/' unless check_permission('edit')
+
   @article = Article.get(params[:id])
-  @action = "edit"
+  @action = 'edit'
   if @article
     view :article_edit
   else
-    redirect "/"
+    redirect '/'
   end
 end
 
 get '/article/delete/:id' do
-  redirect "/" if not check_permission "delete"
- 
+  redirect '/' unless check_permission('delete')
+
   @article = Article.get(params[:id])
   view :article_delete
 end
 
 delete '/article' do
-  puts @permissions
-  redirect "/" if not check_permission "delete"
-  
+  redirect '/' unless check_permission('delete')
+
   @article = Article.get(params[:id])
   @article.destroy
-  redirect "/"
+  redirect '/'
 end
 
 post '/article/edit' do
-  redirect "/" if not check_permission "edit"
+  redirect '/' unless check_permission('edit')
   @article = Article.get(params[:id])
-  puts params.inspect 
+
   if @article
     puts @article.version
     @article.title = params[:article_title]
@@ -103,18 +104,19 @@ post '/article/edit' do
     @article.parent = params[:article_parent] if Integer(params[:article_parent]) rescue false
     @article.distance = params[:article_distance] if Integer(params[:article_distance]) rescue false
     @article.updated_at = Time.now
+
     if @article.save
       redirect "/article/#{@article.id}"
     else
       redirect "/article/edit/#{@article.id}"
     end
   else
-    redirect "/"
+    redirect '/'
   end
 end
 
 get '/article/all.json' do
-  @articles = Article.all(:order => [:parent.asc])
+  @articles = Article.all(order: [:parent.asc])
   @articles.to_json
 end
 
@@ -130,55 +132,55 @@ end
 
 # User handling
 get '/user' do
-  redirect "/" if not check_permission "user_edit"
+  redirect '/' unless check_permission('user_edit')
   @users = User.all
   view :user
 end
 
 get '/user/login' do
-  @action = "login"
+  @action = 'login'
   view :user_login
 end
 
 post '/user/login' do
-  user = User.first(:email => params[:user_email])
-  redirect "/user/login" if user.nil?
-  if user.password.is_password? params[:user_password]
+  user = User.first(email: params[:user_email])
+  redirect '/user/login' if user.nil?
+  if user.password.is_password?(params[:user_password])
     session[:user] = user
-    redirect "/"
+    redirect '/'
   else
-    redirect "/user/login"
+    redirect '/user/login'
   end
 end
 
 get '/user/create' do
-  @action = "create"
+  @action = 'create'
   view :user_login
 end
 
 post '/user/create' do
-  @user = User.new :email => params[:user_email]
+  @user = User.new(email: params[:user_email])
   @user.password = params[:user_password]
   if @user.save
     session[:user] = @user
-    redirect "/"
+    redirect '/'
   else
-    redirect "/user/create"
+    redirect '/user/create'
   end
 end
 
 get '/user/logout' do
   session[:user] = nil
-  redirect "/"
+  redirect '/'
 end
 
 post '/user/edit' do
   user = User.get(params[:user_id])
   if user
     user.email = params[:user_email]
-    user.password = params[:user_password] if params[:user_password] != ""
+    user.password = params[:user_password] unless params[:user_password].empty?
     user.permissions = params[:user_permissions] if Integer(params[:user_permissions]) rescue false
-    user.save!  
-    redirect "/user"
+    user.save!
+    redirect '/user'
   end
 end

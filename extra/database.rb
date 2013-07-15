@@ -5,7 +5,7 @@ require 'bcrypt'
 
 DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, "sqlite3://#{File.expand_path(File.dirname(__FILE__))}/../db/mindmap.db")
-DataMapper::Model.raise_on_save_failure 
+DataMapper::Model.raise_on_save_failure
 
 class Article
   include DataMapper::Resource
@@ -16,9 +16,9 @@ class Article
   property :content_markdown, Text
   property :parent, Integer
   property :rotation, Integer
-  property :distance, Integer, :default => 200
-  property :version, Integer, :default => 1
-  property :created_at, DateTime, :default => DateTime.now
+  property :distance, Integer, default: 200
+  property :version, Integer, default: 1
+  property :created_at, DateTime, default: DateTime.now
   property :updated_at, DateTime
 end
 
@@ -29,8 +29,8 @@ class User
   property :id, Serial
   property :email, String
   property :password_hash, Text
-  property :permissions, Integer, :default => 0
-  property :created_at, DateTime, :default => DateTime.now
+  property :permissions, Integer, default: 0
+  property :created_at, DateTime, default: DateTime.now
 
   def password
     @password ||= Password.new(password_hash)
